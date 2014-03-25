@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = 'starIOPrintSDK'
+  s.name         = 'StarIO'
   s.version      = '3.9.0'
   s.summary      = 'Star Micronics iOS Print SDK'
   s.description  = <<-DESC
