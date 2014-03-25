@@ -404,15 +404,6 @@ STARIOPORT_API SM_BOOLEAN CALL_CONVENT EndCheckedBlockEx(void * port, void * sta
 */
 STARIOPORT_API SM_BOOLEAN CALL_CONVENT ResetDevice(void * port);
 
-/*
-    SetEndCheckedBlockTimeoutMillis
-    --------
-    This function is to change timeout value of endCheckedBlock function.
-    Parameters: port          - pointer to a previously created port
-               timeoutMillis - timeout of endCheckedBlock[msec]
- */
-void SetEndCheckedBlockTimeoutMillis(void * port, UINT32 timeoutMillis);
-    
 #ifdef __cplusplus
 }
 #endif

@@ -39,7 +39,6 @@ enum Emulation {
     enum Emulation emulation;
 }
 @property (readonly, getter = isConnected) BOOL connected;
-@property(readwrite) u_int32_t endCheckedBlockTimeoutMillis;
 
 + (BOOL)matchPort:(NSString *)portName portSettings:(NSString *)portSettings;
 - (id)initWithPortName:(NSString *)portName portSettings:(NSString *)portSettings timeout:(u_int32_t)timeout;

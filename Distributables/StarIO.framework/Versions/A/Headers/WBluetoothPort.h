@@ -32,13 +32,12 @@
     NSMutableData *_readData;
 }
 @property (readonly, getter = isConnected) BOOL connected;
-@property (readwrite) u_int32_t endCheckedBlockTimeoutMillis;
 
 + (BOOL)matchPort:(NSString *)portName portSettings:(NSString *)portSettings;
 - (id)initWithPortName:(NSString *)portName portSettings:(NSString *)portSettings timeout:(u_int32_t)timeout;
 - (void)dealloc;
 - (BOOL)open;
-- (int32_t)write:(NSData *)data;
+- (u_int32_t)write:(NSData *)data;
 - (NSData * )read:(NSUInteger)bytesToRead;
 - (BOOL)getParsedStatus:(StarPrinterStatus_2 *)starPrinterStatus level:(u_int32_t)level;
 - (BOOL)getParsedStatus:(StarPrinterStatus_2 *)starPrinterStatus level:(u_int32_t)level timeout:(__darwin_time_t)timeoutSec;

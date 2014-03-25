@@ -48,13 +48,11 @@
 	int m_ioTimeoutMillis;
 }
 
-@property(assign, readwrite) u_int32_t endCheckedBlockTimeoutMillis;
-
 + (NSArray *)searchPrinter;
 + (NSArray *)searchPrinter:(NSString *)target;
 
-+ (NSMutableData *)compressRasterData:(int32_t)width :(int32_t)height :(u_int8_t *)imageData :(NSString *)portSettings;
-+ (NSMutableData *)generateBitImageCommand:(int32_t)width :(int32_t)height :(u_int8_t *)imageData :(NSString *)portSettings __attribute__((deprecated));
++ (NSMutableData *) generateBitImageCommand:(int32_t)width :(int32_t)height :(u_int8_t *)imageData :(NSString *)portSettings;
+
 
 /*
  getPort
@@ -176,5 +174,4 @@
 - (u_int32_t)timeoutMillis;
 - (BOOL)connected;
 
-+ (void)setMACAddressSourceBlock:(NSString *(^)(EAAccessory *accessory))macAddressSourceBlock;
 @end
