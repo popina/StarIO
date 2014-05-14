@@ -37,6 +37,7 @@
 @property(retain, readonly) NSString *macAddress;
 @property(retain, readonly) NSString *modelName;
 @property(readonly, getter=isConnected) BOOL connected;
+
 @end
 
 @interface SMPort : NSObject {
@@ -46,13 +47,17 @@
 	NSString * m_portName;
 	NSString * m_portSettings;
 	int m_ioTimeoutMillis;
+    
+    BOOL checkedBlockSupport;
 }
+
+@property(assign, readwrite) u_int32_t endCheckedBlockTimeoutMillis;
 
 + (NSArray *)searchPrinter;
 + (NSArray *)searchPrinter:(NSString *)target;
 
-+ (NSMutableData *) generateBitImageCommand:(int32_t)width :(int32_t)height :(u_int8_t *)imageData :(NSString *)portSettings;
-
++ (NSMutableData *)compressRasterData:(int32_t)width :(int32_t)height :(u_int8_t *)imageData :(NSString *)portSettings;
++ (NSMutableData *)generateBitImageCommand:(int32_t)width :(int32_t)height :(u_int8_t *)imageData :(NSString *)portSettings __attribute__((deprecated));
 
 /*
  getPort
@@ -122,6 +127,13 @@
 - (void)getParsedStatus:(void *)starPrinterStatus :(u_int32_t)level;
 
 /*
+ getFirmwareInformation
+ --------
+ This function retrieves the device's firmware information.
+ */
+- (NSDictionary *)getFirmwareInformation;
+ 
+/*
  getOnlineStatus
  --------
  This function retreives the device's online status.
@@ -174,4 +186,5 @@
 - (u_int32_t)timeoutMillis;
 - (BOOL)connected;
 
++ (void)setMACAddressSourceBlock:(NSString *(^)(EAAccessory *accessory))macAddressSourceBlock;
 @end
