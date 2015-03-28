@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'Commercial', :file => 'LICENSE' }
   s.author       = { 'Star Micronics Co., Ltd.' => 'contact@starmicronics.com' }
   s.platform     = :ios, '5.1.1'
-  s.source       = { :git => 'https://github.com/cflorion/StarIO.git', :tag => '3.13.1' }
+  s.source       = { :git => 'https://github.com/popina/StarIO.git', :tag => '3.13.1' }
   s.frameworks = 'UIKit', 'CoreGraphics', 'ExternalAccessory'
   s.library   = 'z'
   s.preserve_paths = 'Distributables/*.framework'
