@@ -333,6 +333,33 @@ STARIOPORT_API SM_BOOLEAN CALL_CONVENT GetParsedStatus(void * port, StarPrinterS
 */
 STARIOPORT_API SM_BOOLEAN CALL_CONVENT GetParsedStatusEx(void * port, void * starPrinterStatus, UINT32 level);
 
+    
+/*
+    GetParsedStatusEx
+    --------
+    This function retreives the device's detailed status.
+     
+    Parameters: port              - pointer to a previously created port
+    starPrinterStatus - pointer to a StarPrinterStatus_n structure where the devices detailed status is written (either StarPrinterStatus_0, StarPrinterStatus_1, or StarPrinterStatus_2)
+    level             - integer designating the level of status structure (either 0, 1, or 2)
+    Returns:    SM_FALSE on failure
+    or
+    SM_TRUE on success
+ */
+STARIOPORT_API SM_BOOLEAN RetrieveFirmwareInformation(void * port);
+
+/*
+    RetrieveDipSwitchInformation
+    --------
+    This function retreives the device's dip switch status.
+ 
+    Parameters: port  - pointer to a previously created port
+    Returns:    SM_FALSE on failure
+                  or
+                SM_TRUE on success
+*/
+STARIOPORT_API SM_BOOLEAN RetrieveDipSwitchInformation(void * port);
+
 /*
     BeginCheckedBlock
     --------
@@ -404,6 +431,51 @@ STARIOPORT_API SM_BOOLEAN CALL_CONVENT EndCheckedBlockEx(void * port, void * sta
 */
 STARIOPORT_API SM_BOOLEAN CALL_CONVENT ResetDevice(void * port);
 
+/*!
+ *  デバイスからファームウェア情報を取得する。
+ *
+ *  @param  fwInfo
+ *  @param  fwInfoLength
+ *  @return 成功時はSM_TRUE, 失敗時はSM_FALSEを返す。
+ */
+STARIOPORT_API char * CALL_CONVENT GetFirmwareInformation(void * port);
+
+/*!
+ *  デバイスからDip Switch情報を取得する。
+ *
+ *  @param  port    ポート構造体へのポインタ
+ *  @param  dsInfo  Dip Switch Channel番号
+ *  @return 成功時はSip Switch情報を格納したポインタ, 失敗時はnillを返す。
+ */
+STARIOPORT_API char * CALL_CONVENT GetDipSwitchInformation(void * port, u_int8_t dsInfo);
+
+/*!
+ *  ボタンセキュリティのタイムアウト時間を取得する。
+ *
+ *  @param  port    ポート構造体へのポインタ
+ *  @return ボタンセキュリティ有効時はタイムアウト時間を、無効の場合は0を返す。エラー時は-1を返す。
+ */
+STARIOPORT_API int CALL_CONVENT retrieveButtonSecurityTimeout(void * port);
+    
+UINT32 GetEndCheckedBlockTimeoutMillis(void * port);
+    
+/*
+    SetEndCheckedBlockTimeoutMillis
+    --------
+    This function is to change timeout value of endCheckedBlock function.
+    Parameters: port          - pointer to a previously created port
+               timeoutMillis - timeout of endCheckedBlock[msec]
+ */
+void SetEndCheckedBlockTimeoutMillis(void * port, UINT32 timeoutMillis);
+
+#pragma mark Private
+    
+    STARIOPORT_API SM_BOOLEAN CALL_CONVENT IsUSBSharing(void * port);
+    
+    STARIOPORT_API SM_BOOLEAN CALL_CONVENT IsDKAirCash(void * port);
+
+
+    
 #ifdef __cplusplus
 }
 #endif
