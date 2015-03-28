@@ -1,36 +1,57 @@
-starIOPrintSDK
+StarIOPrintSDK
 ==============
 
 Star Micronics iOS Print SDK
 
 ************************************************************
-      StarIO for iOS
+      StarIO for iOS Ver.3.13.1
          Readme_En.txt             Star Micronics Co., Ltd. 
 ************************************************************
 
+
  1. Overview
- 2. Contents
- 3. Scope
- 4. Notification (For customers who are already using our SDK older than Ver.3.7.2)
- 5. Copyright
- 6. Release History
+ 2. Ver 3.13.1 Changes
+ 3. Contents
+ 4. Scope
+ 5. Remarks
+ 6. Copyright
+ 7. Release History
+
 
 =============
  1. Overview
 =============
 
-  This software is StarIO for iOS.
-  StarIO is a high level programming tool that simplifies the development
-  and creation of software for Star printers. 
-  This SDK support iOS from 4.3 to 7.0.
-  Please refer to document in zip file.
+   This package contains StarIO and its SDK.
+   StarIO is a library for supporting to develope application for Star printers.
 
+      StarIO.framework version:  1.19.2
+      Supported OS:  iOS 5.1.1 - 8.2
+
+   Please refer to document including this package for details.
+
+=======================
+ 2. Ver 3.13.1 Changes
+=======================
+
+  [StarIO]
+   - Fixed memory leak bug
+
+   - Fixed Bluetooth searchPrinter API bug.
+     Application may crash if bluetooth printer is turned off
+     during the searchPrinter API is executing.
+
+  [SDK]
+   - Fixed issue of leaving blank space in the lower part of image
+     printing using StarBitmap class with mobile printer.
+   - Deleted 32bit build from target.
+     (32 and 64 bit are suppored by one build.)
 
 =============
- 2. Contents
+ 3. Contents
 =============
 
-  StarIO_iOS_V380
+  StarIO_iOS_SDK_V3_13_1_20150316
   |
   | Readme_En.txt                       // Release Note(English)
   | Readme_Jp.txt                       // Release Note(Japanese)
@@ -38,63 +59,28 @@ Star Micronics iOS Print SDK
   | SoftwareLicenseAgreement_jp.pdf     // Software License Agreement(Japanese)
   |
   +- Documents
-  |  +- README_StarIO_PortablePrinter_iOS_SDK.pdf     // Master help file (English:  Mobile Printer)
-  |     README_StarIO_PortablePrinter_iOS_SDK_Jp.pdf  // Master help file (Japanese: Mobile Printer)
+  |  +- README_StarIO_PortablePrinter_iOS_SDK.pdf     // Master help file (English:  Portable Printer)
+  |     README_StarIO_PortablePrinter_iOS_SDK_Jp.pdf  // Master help file (Japanese: Portable Printer)
   |     README_StarIO_POSPrinter_iOS_SDK.pdf          // Master help file (English:  Desktop Printer)
   |     README_StarIO_POSPrinter_iOS_SDK_Jp.pdf       // Master help file (Japanese: Desktop Printer)
+  |     README_StarIO_DK-AirCash_iOS_SDK.pdf          // Master help file (English:  DK-AirCash)
+  |     README_StarIO_DK-AirCash_iOS_SDK_Jp.pdf       // Master help file (Japanese: DK-AirCash)
   |     StarMicronics_POSPrinters_Mac_Ethernet.pdf    // Master help file (English:  Desktop Printer)
-  |     ESCPOSDocuments.pdf                           // Appendix (English:  Desktop Printer)
   |
   +- Distributables
-  |  +- StarIO.framework                // framework
+  |  +- StarIO.framework                // framework (v1.19.2)
   |
   +- Samples
-    +- IOS_SDK.xcodeproj                // project file for sample program
-       StarIO.framework                 // framework
+    +- IOS_SDK.xcodeproj                // project file for sample program (v3.13.1)
+       StarIO.framework                 // framework (v1.19.2)
        IOS_SDK                          // sample program
 
 
 =================
- 3. Scope
+ 4. Scope
 =================
   [OS]
-    iOS 4.3 - 7 (*1)
-
-     *1 Limitation for iOS 7
-
-         Under the iOS 7, you cannot use Bluetooth MAC Address to specify a printer among 
-         multiple paired printers.
-
-         In case of using one printer with one iOS terminal, this limitation does not happen.
-
-     Countermeasures
-
-         Under the iOS 7, you can not get printer's Bluetooth MAC Address, so cannot identify
-         the printer.
-
-         Consequently you will be lost among multiple printers paired to iOS, unable to identify 
-	 the printer receiving the print data.
-
-          [How to specify a printer among mulitple printers]
-
-           (In usage between TSP654II-Bluetooth and SAC10)
-            "Star Setting Utility" is capable of naming each printer's iOS port. Use this function 
-            to identify printers.
-            You can download "Star Setting Utility" from App Store.
-
-           (Portable printers)
-	    1. Those customers who are already using multiple printers with one iOS6 terminal;
-	       please refrain from updating the OS to iOS7.
-
-  	    2. Those customers who are going to use our SDK under iOS7;
-	       please do not use multiple printers with one iOS7 terminal. Keep one-to-one comibination.
-
-	    No countermeasure is found at this moment for the usage out of these conditions.
-
-
-	  Note: We plan to update portable printer specifications to solve these problems.
-		We will notify those updates in our WEB site. (www.star-m.jp)
-
+    iOS 5.1.1 - 8.2
 
   [Printer Model]
     SM-S210I            (Ver1.0 or later)
@@ -115,7 +101,9 @@ Star Micronics iOS Print SDK
     * Requires Apple Airport Express
 
   [DK-AirCash]
-    SAC10               (Ver1.0 or later)
+    SAC10               (LAN         : Ver2.0 or later)
+                        (Bluetooth   : Ver1.0 or later)
+                        (Wireless LAN: Ver3.0 or later)
 
   [Interface]
     LAN:       IFBD-HE07/HE08/BE07 (Ver2.0.0 or later)
@@ -126,7 +114,8 @@ Star Micronics iOS Print SDK
     - Raster Graphics Mode
     - ESC/POS Mode
 
-    * In case print data is all graphics, recommend to use "Raster Graphics Mode".
+    * In case print data is all graphics, recommend to use 
+      "Raster Graphics Mode".
       When the print data includes device font, use "Star Line Mode".
       Depending on model, support emulation is different. 
       Please refer to model list below.
@@ -139,10 +128,15 @@ Star Micronics iOS Print SDK
       TSP800II
       SAC10
 
-      Refer to the Star Line Mode Command Specifications manual for details of what
-      commands are supported.
-      This manual is freely available on the Star Micronics website.
+         Refer to the Star Line Mode Command Specifications manual for details 
+         of what commands are supported.
+         This manual is freely available on the Star Micronics website.
 
+      SP700
+
+         Refer to the Star Command Specifications manual for details
+         of what commands are supported.
+         This manual is freely available on the Star Micronics website.
 
     Raster Graphics Mode:
       TSP100LAN
@@ -157,9 +151,9 @@ Star Micronics iOS Print SDK
 
       * Apple AirPort Express is required.
 
-      Refer to section 3.4 "Raster Graphics Command Details" in the
-      Star Line Mode Command Specifications manual. 
-      This manual is freely available on the Star Micronics website.
+         Refer to section 3.4 "Raster Graphics Command Details" in the
+         Star Line Mode Command Specifications manual. 
+         This manual is freely available on the Star Micronics website.
 
 
     ESC/POS Mode (Portable Printer):
@@ -169,81 +163,186 @@ Star Micronics iOS Print SDK
       SM-T300I
       SM-T400I
 
-      Refer to section 1 "Printer Control Function" in the
-      Star Mobile Printer Command Specifications manual. 
-      This manual is freely available on the Star Micronics website.
+         Refer to section 1 "Printer Control Function" in the
+         Star Portable Printer Command Specifications manual. 
+         This manual is freely available on the Star Micronics website.
 
 
-=====================================================================================
- 4. Notification (For customers who are already using our SDK older than Ver.3.7.2)
-=====================================================================================
+ =============
+  5. Remarks
+ =============
 
-    We have found phenomenon that port open failure occures in Bluetooth printers 
-    in the following two cases:
+  1. Limitation of SAC10 F/W Ver.1.0
 
-      1. Download StarIO SDK older than Ver.3.7.2 from App Store and run under iOS7
+     The usage with following conditions on the SAC10 will require F/W 2.0 or later.
+     Please confirm the F/W version of the SAC10 before using StarIO.
+       - Use LAN interface
+       - Use getDipSwitchInformation method
 
-      or
+     You can confirm the F/W version by “Star Setting Utility”.
+     Star Setting Utility is available on the App Store.
 
-      2. Use SDK older than Ver.3.7.2 which was built with Xcode4 under iOS7
+     When Star Setting Utility is executed, it will automatically detect 
+     SAC10 online and list them up.
+     Tapping SAC10 on the list, SAC10 configuration window will activated in 
+     Web browser. Tapping [Display Status] - [Firmware Info.] on the window, 
+     “Main F/W” box will show the F/W version. 
 
- 
-    The StarIO SDK Ver.3.8.0 has already fixed this issue and no problem happenes 
-    even if built with Xcode4.
- 
-    When making application to refer SDK older than Ver.3.7.2 and experiencing 
-    the above phenomenon, 
-    please refer to following countermeasures:
-
-    [Countermeasure]
-    You can fix this phenomenon by applying one of the following countermeasures:
-    
-    - Build project with Xcode5
-
-    - Change the application reference target as below: 
-      Set text in UITextField quoting not from Designer but from code (such as viewDidLoad).
-
-          (ex: IOS_SDKViewControllerLineMode.m   at line 101-118)
-
-            - (void)viewDidLoad
-            {
-                [super viewDidLoad];
-
-                (ellipsis)
-    
-                uitextfield_portname.text = @"BT:Star Micronics"; // add
-            }
+     If you use Telnet for this procedure, please refer to the 
+     “Product Specifications Manual SAC10 Series".
 
 
-    Background of the phenomenon:
+  2. Limitation of getting MAC Address for Bluetooth printers with iOS 7
 
-    When all the three conditions as below are met, we have confirmed the phenomenon that 
-    the text in UITextField can not be  correctly obtained.
- 
-    (1) Arrange UITextField with Designer and put there some text with space(s) using 
-        the Designer.
-    (2) Build project with Xcode 4
-    (3) Execute appliation under iOS7
-    When all the above conditions are met, UITextField text property which are obtained 
-    from the code will have space(s) turned into garbled or incorrect character(s).
+     Under the iOS 7, you cannot use Bluetooth MAC Address to specify a 
+     printer among multiple paired printers.
 
-    FYI, StarIO SDK older than Ver.3.7.2 contains spaces in the text because it has 
-    mentioning like "BT:Star Micronics" or "BT:PRN Star" in itself.
-    Consequently, in case that you execute SDK Ver.3.7.2 under iOS7, SDK main program 
-    will fail to open the printer's port as the result of calling getPort::: API without 
-    obtaining correct Port Name.
+     Consequently you will be lost among multiple printers paired to iOS, 
+     unable to identify the printer receiving the print data.
+
+       [How to specify a printer among mulitple printers]
+
+         (In usage between TSP654II-Bluetooth and SAC10)
+          "Star Setting Utility" is capable of naming each printer's iOS 
+          port. Use this function to identify printers.
+          You can download "Star Setting Utility" from App Store.
+
+         (Portable printers)
+          1. Those customers who are already using multiple printers with 
+             one iOS6 terminal;
+             please refrain from updating the OS to iOS7.
+
+          2. Those customers who are going to use our SDK under iOS7;
+             please do not use multiple printers with one iOS7 terminal. 
+             Keep one-to-one comibination.
+
+       No countermeasure is found at this moment for the usage out of these 
+       conditions.
+
 
 
 ==============
- 5. Copyright
+ 6. Copyright
 ==============
 
-  Copyright 2013 Star Micronics Co., Ltd. All rights reserved.
+  Copyright 2015 Star Micronics Co., Ltd. All rights reserved.
 
 
 ====================
- 6. Release History
+ 7. Release History
 ====================
+
+  Ver 3.13.1
+   2015/03/09 : [StarIO]
+                - Fixed memory leak bug
+                - Fixed Bluetooth searchPrinter API bug.
+                  Application may crash if bluetooth printer is turned off
+                  during the searchPrinter API is executing.
+
+                [SDK]
+                 - Fixed issue of leaving blank space in the lower part of image
+                   printing using StarBitmap class with mobile printer.
+
+                 - Deleted 32bit build from target.
+                   (32 and 64 bit are suppored by one build.)
+
+  Ver 3.13.0
+   2014/10/23 : Support SAC10 Wireless LAN model
+
+                [StarIO]
+                  Improve processing speed of beginCheckedBlock API for POS printers.
+
+                [SDK]
+                  Fix the bug which displays additional blanks on iOS8 with iPad.
+
+                [Manual]
+                  Add SAC10 Wireless LAN model description.
+
+  Ver 3.12.0
+   2014/09/10 : [StarIO]
+                  - Added API to get DIP-SW setting configuration for SAC10.
+                  - Added API to get StarIO version.
+                  - Revised StarIO to minimize the time to start to print
+                    with Bluetooth POS printers.
+
+                [SDK]
+                  - Added SP700.
+                  - Added Sample receipt of Traditional Chinese and Simplified Chinese.
+                    (* Portable Printers only add Sample receipt of Traditional Chinese.)
+                  - Added Image File Printing sample code in Thermal Printer Raster Mode
+
+                [Manual]
+                 - Added descriptions of above additional functions.
+
+  Ver 3.10.3
+   2014/07/23  : [StarIO]
+                  - Bug Fix:
+                      [Bluetooth]
+                        Fixed the issue that,
+                        Calling repeatedly getPort before calling releasePort,
+                        disrupts Bluetooth communication.
+
+                  - Added function to set timeout value for Data cancel function by
+                    timeout.  Default: 3 sec. (*1)
+
+                    *1: Supported Printer model/ F/W version
+                        - TSP650II F/W higher than 2.0
+                        - TSP700II F/W higher than 5.0
+                        - TSP800II F/W hither than 2.0
+
+                  - Throw exception when detect Bluetooth communication disconnection by
+                    beginCheckedBlock method.
+
+                  - Set timeout value to 10 sec. even when set less than 10 sec. by getPort method.
+ 
+                 [Manual]
+                  - Added description about data timeout function.
+  
+  Ver 3.10.2
+   2014/06/24  : [StarIO]
+                  - Bug Fix:
+                    [Desktop Printer + LAN] Sometimes beginCheckedBlock method 
+                                            returns an incorrect status.
+                    
+                 [SDK]
+                  - Fixed. The issue that Raster Printing takes long time 
+                    with POS printers compared to SDK V3.9.0.
+
+  Ver 3.10.1
+   2014/04/28  : [StarIO]
+                 - Added Bluetooth communication support on iOS7.1.
+                 - Added model name / firmware get API.
+                   (getFirmwareInformation method)
+                 - Improved so that begin/endCheckedBlock is available for 
+                   SM-T300WLAN  F/W2.3 or older.
+                 - Fixed the issue with the Ver.3.9.0 that USB printers via 
+                   AirPort can not print.
+                 - Added button security function for SAC10.
+
+                 [Manual]
+                 - Added description of the above new features of the above.
+
+ Ver 3.9.0
+  2013/12/05 :   [StarIO]
+                 - Added arm64 CPU(iPhone 5s, iPad Air, iPad mini Retina 
+                   Display model) support.
+                 - Changed support OS version. 
+                   (iOS 4.3 or later -> iOS 5.1.1 or later)
+                 - Added bluetooth setting API.(SMBluetoothManager class)
+                 - Renamed generateBitImageCommand to compressRasterData.
+                 - Improved the reliability of searchPrinter API.
+                 - Added endCheckedBlockTimeoutMillis property.
+                 - Bug Fix:
+                   - [Portable printer] For the return value of getParsedStatus, 
+                     headThermistorError and slipTOF becomes an undefined value.
+
+                 [SDK]
+                 - Added "Open Cash Drawer 2".
+
+                 [Manual]
+                 - Added a description of the additional features of the above.
+                 - Error correction.
+
  Ver 3.8.0
   2013/09/20 :   - Added iOS 7 Support.
                  - Bug Fix:
