@@ -14,14 +14,13 @@
 #ifndef ioport__
 #define ioport__
 
-#if TARGET_OS_IPHONE
-    #ifdef BUILDING_STARIO
-        #include <starmicronics/Platform.h>
-    #else
-        #include <StarIO/starmicronics/Platform.h>
-    #endif
+
+#ifdef BUILDING_STARIO
+    #include <starmicronics/Platform.h>
+    #include "enum.h"
 #else
-#include <starmicronics/Platform.h>
+    #include <StarIO/starmicronics/Platform.h>
+    #include <StarIO/enum.h>
 #endif
 
 #ifdef COMPILING_STARIOPORT
@@ -29,6 +28,7 @@
 #else
 #define STARIOPORT_API DLL_IMPORT
 #endif
+
 
 typedef struct StarPrinterStatus_
 {
@@ -168,6 +168,7 @@ typedef struct StarPrinterStatus_2_
   UCHAR raw[63];
 } StarPrinterStatus_2;
 
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -223,6 +224,8 @@ extern "C"
                        }
                    }
 */
+    
+
 #if defined(_WINDOWS) || defined(WIN32)
 
   STARIOPORT_API void * CALL_CONVENT OpenPortW(wchar_t const * portName, wchar_t const * portSettings, UINT32 ioRequestTimeoutMillis);
@@ -241,10 +244,11 @@ extern "C"
 
 #else
 
-  STARIOPORT_API void * CALL_CONVENT OpenPort(char const * portName, char const * portSettings, UINT32 ioRequestTimeoutMillis);
-
+    STARIOPORT_API void * CALL_CONVENT OpenPort(char const * portName, char const * portSettings, UINT32 ioRequestTimeoutMillis, SMEmulation emulation);
+    
 #endif
 
+    
 /*
     ClosePort
     --------
@@ -433,9 +437,8 @@ STARIOPORT_API SM_BOOLEAN CALL_CONVENT ResetDevice(void * port);
 
 /*!
  *  デバイスからファームウェア情報を取得する。
+ *  @param  port    ポート構造体へのポインタ
  *
- *  @param  fwInfo
- *  @param  fwInfoLength
  *  @return 成功時はSM_TRUE, 失敗時はSM_FALSEを返す。
  */
 STARIOPORT_API char * CALL_CONVENT GetFirmwareInformation(void * port);

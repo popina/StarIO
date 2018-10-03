@@ -3,7 +3,7 @@
  *  @framework StarIOPort
  *
  *  @discussion Entry point to StarIO.
- *  @copyright 2014 Star Micronics Co., Ltd. All rights reserved.
+ *  @copyright 2016 Star Micronics Co., Ltd. All rights reserved.
  */
 
 #import <Foundation/Foundation.h>
@@ -19,7 +19,7 @@
 #endif
 
 #import "WBluetoothPort.h"
-#import "BluetoothPort.h"
+#import "ExternalAccessoryPort.h"
 #import "Lock.h"
 
 @interface PortException : NSException
@@ -35,14 +35,13 @@
 @property(retain, readonly) NSString *portName;
 @property(retain, readonly) NSString *macAddress;
 @property(retain, readonly) NSString *modelName;
-@property(readonly, getter=isConnected) BOOL connected;
 
 @end
 
 @interface SMPort : NSObject {
     void * m_port;
-    WBluetoothPort* wBluetoothPort;
-    BluetoothPort* bluetoothPort;
+    WBluetoothPort *wBluetoothPort;
+    ExternalAccessoryPort *externalAccessoryPort;
     NSString * m_portName;
     NSString * m_portSettings;
     int m_ioTimeoutMillis;
@@ -66,21 +65,22 @@
 /*!
  *  Search printer on LAN or paired bluetooth device.
  *
- *  @param Identifies the interface type to search (ex. "TCP:", "BT:", "BT:xxx").
+ *  @param  target   the interface type to search (ex. "TCP:", "BT:", "BT:xxx", "USB:xxx").
  *
  *  @return List of printers that were found.
  */
 + (NSArray *)searchPrinter:(NSString *)target;
 
-/*!
+/*!
  *  This function opens a connection to the port specified.
  *
  *  @param portName        String taking the following form
  *                           "tcp:nnn.nnn.nnn.nnn" which opens the network printer at the specified IP address (i.e. '192.168.11.3')
- *                           "bt:<iOS port name>"  which opens the bluetooth printer at the specified port name. (i.e. 'StarMicronics')
+ *                           "bt:<iOS port name>"  which opens the bluetooth printer at the specified port name. (i.e. 'Star Micronics')
+ *                           "usb:<iOS port name>" which opens the usb printer at specified port name.(i.e. 'TSP100')
  *  @param portSettings    Star Line Mode: Empty string ("")
- *                           ESC/POS Mode: "E" or "e"
- *                           Portable Printer: "Mini"
+ *                         Portable Printer (Star Line): "Portable"
+ *                         Portable Printer (ESC/POS): "Portable;ESCPOS"
  *  @param ioTimeoutMillis This is the time out for trying to get the port in milliseconds.
  *
  *  @return SMPort class for StarIO port.
@@ -98,7 +98,7 @@
  *  This function writes data to the device.
  *
  *  @param writeBuffer Pointer to a byte buffer containing the write data.
- *  @param offset      Amount of data that was already written.
+ *  @param offSet      Amount of data that was already written.
  *  @param size        Amount of data left to write.
  *
  *  @return Amount of data written.
@@ -110,9 +110,9 @@
 /*!
  *  This function reads data from the device.
  *
- *  @param readBuffer       Pointer to a byte buffer into which data is read.
- *  @param offSet           Size in bytes to read.
- *  @param sizeCommunicated Amount of data to be write to the buffer.
+ *  @param readBuffer   Pointer to a byte buffer into which data is read.
+ *  @param offSet       Size in bytes to read.
+ *  @param size         Amount of data to be write to the buffer.
  *
  *  @return Aount of data written to the buffer.
  *
@@ -180,7 +180,7 @@
 - (void)endCheckedBlock:(void *)starPrinterStatus :(u_int32_t)level;
 
 /*!
- *  Disconnect Bluetooth port for POS Printer and DK Aircash.
+ *  Disconnect Bluetooth port for Desktop Printer and DK-AirCash.
  *
  *  @return YES if succeed to disconnect Bluetooth or I/F is Ethernet, otherwise NO.
  */
@@ -196,4 +196,26 @@
 - (BOOL)connected;
 
 + (void)setMACAddressSourceBlock:(NSString *(^)(EAAccessory *accessory))macAddressSourceBlock;
+
+//
+// NSError was added to the argument of API.
+//
+
+- (u_int32_t)writePort:(u_int8_t const *)writeBuffer :(u_int32_t)offSet :(u_int32_t)size :(NSError **)error;
+
+- (u_int32_t)readPort:(u_int8_t *)readBuffer :(u_int32_t)offSet :(u_int32_t)size :(NSError **)error;
+
+- (SM_BOOLEAN)getParsedStatus:(void *)starPrinterStatus :(u_int32_t)level :(NSError **)error;
+
+- (NSDictionary *)getFirmwareInformation:(NSError **)error;
+
+- (NSDictionary *)getDipSwitchInformation:(NSError **)error;
+
+- (bool)getOnlineStatus:(NSError **)error __attribute__((unavailable("Not available. Please change to getOnlineStatusWithError:.")));
+- (SM_BOOLEAN)getOnlineStatusWithError:(NSError **)error;
+
+- (SM_BOOLEAN)beginCheckedBlock:(void *)starPrinterStatus :(u_int32_t)level :(NSError **)error;
+
+- (SM_BOOLEAN)endCheckedBlock:(void *)starPrinterStatus :(u_int32_t)level :(NSError **)error;
+
 @end
