@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'StarIO'
-  s.version      = '5.15.0'
+  s.version      = '5.16.2'
   s.summary      = 'Star Micronics iOS Print SDK'
   s.description  = <<-DESC
   This package contains StarPRNT SDK for supporting to develop applications for Star printers.
